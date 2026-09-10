@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id              String   @id @default(cuid())
+  name            String?
+  email           String   @unique
+  passwordHash    String
+  image           String?
+  stripeAccountId String?
+  createdAt       DateTime @default(now())
+
+  listings         Listing[]
+  sentMessages     Message[]     @relation("SentMessages")
+  receivedMessages Message[]     @relation("ReceivedMessages")
+  purchases        Transaction[] @relation("Buyer")
+  sales            Transaction[] @relation("Seller")
+}
+
+enum ListingStatus {
+  ACTIVE
+  SOLD
+  REMOVED
+}
+
+model Listing {
+  id          String        @id @default(cuid())
+  title       String
+  description String
+  price       Int
+  category    String
+  condition   String
+  images      String[]
+  status      ListingStatus @default(ACTIVE)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  sellerId String
+  seller   User   @relation(fields: [sellerId], references: [id])
+
+  messages    Message[]
+  transaction Transaction?
+
+  @@index([category])
+  @@index([status])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  body      String
+  createdAt DateTime @default(now())
+
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id])
+
+  senderId String
+  sender   User   @relation("SentMessages", fields: [senderId], references: [id])
+
+  receiverId String
+  receiver   User   @relation("ReceivedMessages", fields: [receiverId], references: [id])
+
+  @@index([listingId])
+}
+
+enum TransactionStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+model Transaction {
+  id              String            @id @default(cuid())
+  amount          Int
+  stripeSessionId String?
+  status          TransactionStatus @default(PENDING)
+  createdAt       DateTime          @default(now())
+
+  listingId String  @unique
+  listing   Listing @relation(fields: [listingId], references: [id])
+
+  buyerId String
+  buyer   User   @relation("Buyer", fields: [buyerId], references: [id])
+
+  sellerId String
+  seller   User   @relation("Seller", fields: [sellerId], references: [id])
+}
