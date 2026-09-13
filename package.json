@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "chat": "tsx server/chat-server.ts"
+
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1124.0",
@@ -15,6 +17,7 @@
     "@prisma/client": "^7.10.0",
     "@stripe/stripe-js": "^9.15.0",
     "bcryptjs": "^3.0.3",
+    "cookie": "^2.0.1",
     "dotenv": "^17.4.2",
     "next": "16.3.4",
     "next-auth": "^4.24.15",
@@ -35,6 +38,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
     "tailwindcss": "^4",
+    "tsx": "^4.23.13",
     "typescript": "^5"
   }
 }
