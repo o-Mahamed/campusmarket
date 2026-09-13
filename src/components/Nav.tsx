@@ -7,14 +7,14 @@ export function Nav() {
   const { data: session, status } = useSession();
 
   return (
-    <nav className="mb-6 flex items-center justify-between border-b border-gray-200 pb-4">
+    <nav className="mb-6 flex flex-wrap items-center justify-between gap-y-2 border-b border-gray-200 pb-4">
       <Link href="/" className="text-lg font-semibold">
         CampusMarket
       </Link>
-      <div className="flex items-center gap-4 text-sm">
+      <div className="flex flex-wrap items-center gap-3 text-sm sm:gap-4">
         {status === "loading" ? null : session ? (
           <>
-            <span className="text-gray-600">Hi, {session.user?.name}</span>
+            <span className="hidden text-gray-600 sm:inline">Hi, {session.user?.name}</span>
             <Link href="/listings/new" className="rounded-md bg-black px-3 py-1.5 text-white">
               + New listing
             </Link>
