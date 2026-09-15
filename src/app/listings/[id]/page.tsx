@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { Nav } from "@/components/Nav";
+import { ListingChatSection } from "@/components/ListingChatSection";
 
 export default async function ListingDetailPage({
   params,
@@ -42,13 +43,11 @@ export default async function ListingDetailPage({
           </p>
           <p className="mt-4 whitespace-pre-wrap text-gray-700">{listing.description}</p>
           <p className="mt-4 text-sm text-gray-500">Seller: {listing.seller.name}</p>
-          <button
-            disabled
-            className="mt-6 w-full rounded-md bg-gray-300 px-4 py-2 text-gray-600"
-            title="Chat coming in the next step"
-          >
-            Message seller (coming soon)
-          </button>
+          <ListingChatSection
+            listingId={listing.id}
+            sellerId={listing.seller.id}
+            sellerName={listing.seller.name ?? "the seller"}
+          />
         </div>
       </div>
     </div>
